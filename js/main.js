@@ -76,7 +76,7 @@ async function categorySelected(categoryId) {
     showLoader(false);
   } else {
     document.querySelector('#movies-by-category-container').innerHTML = /*html*/ `
-      <p>Please, select category</p>
+      <p></p>
     `;
   }
 }
