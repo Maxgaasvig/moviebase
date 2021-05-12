@@ -1,5 +1,6 @@
 "use strict";
 
+
 // =========== Movie SPA functionality =========== //
 
 let _movies = [];
