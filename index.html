@@ -23,23 +23,17 @@
   <section id="movies" class="page">
     <header class="topbar">
       <h2>Movies</h2>
-    </header>
-    <input type="search" placeholder="Search" onkeyup="search(this.value)">
-    <section id="movies-container" class="grid-container"></section>
-  </section>
-
-  <!-- category page -->
-  <section id="category" class=" page">
-    <header class="topbar">
-      <h2>Movies By Category</h2>
+      <input type="search" id="searchbar" placeholder="Search" onkeyup="search(this.value)">
     </header>
     <select id="select-category" onchange="categorySelected(this.value)">
-      <option value="">Select Category</option>
+      <option value="">Select Genre</option>
     </select>
     <section id="movies-by-category-container" class="grid-container">
-      <p>Please, select category</p>
+      <p></p>
     </section>
+    <section id="movies-container" class="grid-container"></section>
   </section>
+  
 
   <!-- loader  -->
   <div id="loader">

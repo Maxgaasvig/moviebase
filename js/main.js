@@ -26,7 +26,6 @@ function appendMovies(movies) {
         <h2>${movie.title.rendered} (${movie.acf.year})</h2>
         <img src="${movie.acf.img}">
         <p>${movie.acf.description}</p>
-        <iframe src="${movie.acf.trailer}"></iframe>
       </article>
     `;
   }
@@ -91,7 +90,6 @@ function appendMoviesByCategory(moviesByCategory) {
         <h2>${movie.title.rendered} (${movie.acf.year})</h2>
         <img src="${movie.acf.img}">
         <p>${movie.acf.description}</p>
-        <iframe src="${movie.acf.trailer}"></iframe>
       </article>
     `;
   }

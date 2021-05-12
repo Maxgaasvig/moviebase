@@ -45,6 +45,19 @@ h1 {
   font-weight: 300;
 }
 
+#searchbar{
+  position: fixed;
+  top: -7px;
+  right: 60px;
+}
+
+
+#select-category{
+  position: absolute;
+  top: 50px;
+  right: 60px;
+}
+
 /* ---------- tabbar styling ---------- */
 .tabbar {
   background-color: var(--green);
@@ -169,6 +182,7 @@ h1 {
   .grid-container {
     grid-template-columns: 50% 50%;
   }
+
 }
 
 @media (min-width: 992px) {
