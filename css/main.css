@@ -45,11 +45,6 @@ h1 {
   font-weight: 300;
 }
 
-/*-------- sogresultater ---------*/
-
-.sogresultater{
-  display: flex;
-}
 
 
 /* ---------- tabbar styling ---------- */
@@ -202,7 +197,13 @@ iframe {
   height: 250px;
 }
 
-/* input form stryling */
+
+/*-------- sogresultater ---------*/
+
+.sogresultater{
+  display: flex;
+}
+
 form {
   margin: auto;
 }
@@ -223,7 +224,6 @@ form button {
 
 input, select {
   -webkit-appearance: none;
-  margin: 1em auto;
   width: 100%;
   max-width: 350px;
   padding: 15px 15px;
