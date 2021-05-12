@@ -164,7 +164,7 @@ h1 {
 .grid-container {
   display: grid;
   grid-template-columns: 100%;
-  padding: 5px;
+  padding: 15px;
 }
 
 @media (min-width: 600px) {
@@ -203,8 +203,13 @@ iframe {
 .sogresultater{
   display: flex;
   justify-content: flex-end;
+  padding: 10px 10px;
+
 }
 
+#select-category, #searchbar{
+  margin: 10px;
+}
 
 form {
   margin: auto;
