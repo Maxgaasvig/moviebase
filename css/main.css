@@ -202,8 +202,8 @@ iframe {
 
 .sogresultater{
   display: flex;
+  justify-content: flex-end;
 }
-
 
 
 form {
@@ -232,7 +232,6 @@ input, select {
   box-sizing: border-box;
   display: block;
   justify-content: right;
-  text-ali
   background: #fff;
   border: 0;
   border-radius: 0;
