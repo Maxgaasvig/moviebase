@@ -25,15 +25,19 @@
     <header class="topbar">
       <h2>Movies</h2>
     </header>
+
+
     <section class="sogresultater">
-      <input type="search" id="searchbar" placeholder="Search" onkeyup="search(this.value)">
       <select id="select-category" onchange="categorySelected(this.value)">
         <option value="">Select Genre</option>
       </select>
       <section id="movies-by-category-container" class="grid-container">
         <p></p>
       </section>
+      <input type="search" id="searchbar" placeholder="Search" onkeyup="search(this.value)">
     </section>
+
+    
     <section id="movies-container" class="grid-container"></section>
   </section>
 
