@@ -45,12 +45,6 @@ h1 {
   font-weight: 300;
 }
 
-/*-------- sogresultater ---------*/
-
-.sogresultater{
-  display: flex;
-  
-}
 
 
 /* ---------- tabbar styling ---------- */
@@ -203,7 +197,13 @@ iframe {
   height: 250px;
 }
 
-/* input form stryling */
+
+/*-------- sogresultater ---------*/
+
+.sogresultater{
+  display: flex;
+}
+
 form {
   margin: auto;
 }
