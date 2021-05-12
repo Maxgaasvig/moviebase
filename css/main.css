@@ -45,6 +45,9 @@ h1 {
   font-weight: 300;
 }
 
+.sogresultater{
+  display: flex;
+}
 
 
 /* ---------- tabbar styling ---------- */
