@@ -45,18 +45,7 @@ h1 {
   font-weight: 300;
 }
 
-#searchbar{
-  position: fixed;
-  top: -7px;
-  right: 60px;
-}
 
-
-#select-category{
-  position: absolute;
-  top: 50px;
-  right: 60px;
-}
 
 /* ---------- tabbar styling ---------- */
 .tabbar {
