@@ -24,22 +24,23 @@
       <h2>Movies</h2>
     </header>
 
-
     <section class="sogresultater">
       <select id="select-category" onchange="categorySelected(this.value)">
         <option value="">Select Genre</option>
-      </section>
-      <input type="search" id="searchbar" placeholder="Search" onkeyup="search(this.value)">
-    </section>
       </select>
-
-
-      <section id="movies-by-category-container" class="grid-container">
-        <p></p>
-    <section id="movies-container" class="grid-container"></section>
+    <input type="search" id="searchbar" placeholder="Search" onkeyup="search(this.value)">
   </section>
-  
-<!-- watchlist -->
+
+  <section id="movies-by-category-container" class="grid-container">
+    <p></p>
+  </section>
+    <section id="movies-container" class="grid-container">
+    </section>
+  </section>
+
+
+
+  <!-- watchlist -->
   <section id="watchlist" class=" page">
     <header class="topbar">
       <h2>Movies By Watchlist</h2>
@@ -55,10 +56,10 @@
   </div>
 
   <!-- The core Firebase JS SDK is always required and must be listed first -->
-<script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-app.js"></script>
 
-<!-- Firebase Firestore (database) JS SDK -->
-<script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-firestore.js"></script>
+  <!-- Firebase Firestore (database) JS SDK -->
+  <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-firestore.js"></script>
 
   <!-- SPA functionality  -->
   <script src="js/spa.js"></script>
