@@ -4,6 +4,7 @@
 // =========== Movie SPA functionality =========== //
 
 let _movies = [];
+let _getcategories = [];
 
 // fetch all movies from WP
 async function getMovies() {
@@ -50,6 +51,7 @@ async function getCategories() {
   let response = await fetch("https://movie-api.cederdorff.com/wp-json/wp/v2/categories");
   let data = await response.json();
   console.log(data);
+  _getcategories = data
   appendCategories(data);
 }
 
@@ -68,6 +70,7 @@ function appendCategories(categories) {
 
 // category selected event - fetch movies by selected category
 async function categorySelected(categoryId) {
+  document.querySelector('#movies-container').innerHTML ="";
   if (categoryId) {
     showLoader(true);
     let response = await fetch(`https://movie-api.cederdorff.com/wp-json/wp/v2/posts?_embed&categories=${categoryId}`)
@@ -75,9 +78,8 @@ async function categorySelected(categoryId) {
     appendMoviesByCategory(data);
     showLoader(false);
   } else {
-    document.querySelector('#movies-by-category-container').innerHTML = /*html*/ `
-      <p></p>
-    `;
+    document.querySelector('#movies-by-category-container').innerHTML ="";
+    appendMovies(_movies);
   }
 }
 
@@ -101,6 +103,7 @@ function appendMoviesByCategory(moviesByCategory) {
   }
   document.querySelector('#movies-by-category-container').innerHTML = htmlTemplate;
 }
+
 
 
 // =========== Loader functionality =========== //
