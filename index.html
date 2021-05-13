@@ -54,14 +54,21 @@
   </section>
 
     <!-- Add movie -->
-    <section id="addmovie" class="page">
+      <section id="addmovie" class="page">
       <header class="topbar">
-        <h2>Add your own movies</h2>
+        <h2>Add new movie</h2>
       </header>
+      <form>
+        <input id="title" type="text" name="title" placeholder="Title">
+        <input id="year" type="text" name="year" placeholder="Year">
+        <input id="description" type="text" name="description" placeholder="description">
+        <input id="img" type="text" name="img" placeholder="Image URL">
+        <button type="button" name="button" onclick="addNewMovie()">Save</button>
+      </form>
       <select>
-      <section id="movies-by-watchlist-container" class="grid-container">
-        </section>
-      </select>
+        <section id="movies-by-add-container" class="grid-container">
+          </section>
+        </select>
     </section>
 
 

@@ -18,7 +18,7 @@ async function getMovies() {
 
 getMovies();
 
-// append movies to the DOM
+// append movies to the DOM using a for-of loop
 function appendMovies(movies) {
   let htmlTemplate = "";
   for (let movie of movies) {
@@ -98,13 +98,39 @@ function appendMoviesByCategory(moviesByCategory) {
   // if no movies, display feedback to the user
   if (moviesByCategory.length === 0) {
     htmlTemplate = /*html*/ `
-      <p>No Movies</p>
+      <p>No Movies </p>
     `;
   }
   document.querySelector('#movies-by-category-container').innerHTML = htmlTemplate;
 }
 
+/**
+ * Adding a new movie to the Array of movies
 
+ function addNewMovie() {
+  let titleInput = document.getElementById("title");
+  let yearInput = document.getElementById("year");
+  let descriptionInput = document.getElementById("description");
+  let imgInput = document.getElementById("img");
+
+  let newMovie = {
+    title: titleInput.value,
+    year: yearInput.value,
+    description: descriptionInput.value,
+    img: imgInput.value
+  }
+
+  _movies.push(newMovie);
+  appendMovies(_movies);
+
+
+  //reset 
+titleInput.value = "";
+  navigateTo("movies");
+
+
+}
+ */
 
 // =========== Loader functionality =========== //
 
