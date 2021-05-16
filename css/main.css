@@ -1,10 +1,10 @@
 /* ---------- root variables ---------- */
 :root {
-  --green: rgb(38, 76, 89);
-  --light-green: rgb(172, 198, 201);
-  --light-grey: #f1f1f4;
-  --text-color-light: #f1f1f1;
-  --text-color-dark: #333;
+  --green: rgb(0, 0, 0);
+  --light-green: rgb(0, 0, 0);
+  --light-grey: #2c2c2c;
+  --text-color-light: #f0f0f0;
+  --text-color-dark: #ffffff;
 }
 
 /* ---------- general styling ---------- */
@@ -31,7 +31,7 @@ h1 {
 .topbar {
   background-color: var(--green);
   color: var(--text-color-light);
-  padding: 13.5px;
+  padding: 11.5px;
   text-transform: uppercase;
   position: fixed;
   top: 0;

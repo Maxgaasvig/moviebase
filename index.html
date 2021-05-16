@@ -22,14 +22,14 @@
   <!-- home -->
   <section id="movies" class="page">
     <header class="topbar">
-      <h2>Movies</h2>
+      <h2>YMDB</h2>
     </header>
-
+<!-- searchbar -->
     <section class="sogresultater">
       <select id="select-category" onchange="categorySelected(this.value)">
         <option value="">Show all movies</option>
       </select>
-    <input type="search" id="searchbar" placeholder="Search" onkeyup="search(this.value)">
+    <input type="search" id="searchbar" placeholder="Search YMDB.." onkeyup="search(this.value)">
   </section>
 
   <section id="movies-by-category-container" class="grid-container">
@@ -44,13 +44,13 @@
   <!-- watchlist -->
   <section id="watchlist" class="page">
     <header class="topbar">
-      <h2>Movies By Watchlist</h2>
+      <h2>Watchlist</h2>
     </header>
-    <select>
+    <article id="">
+      <h2>All your favourite movies in one place</h2>
+    </article>
     <section id="movies-by-watchlist-container" class="grid-container">
     </section>
-    </select>
-
   </section>
 
     <!-- Add movie -->
@@ -58,17 +58,18 @@
       <header class="topbar">
         <h2>Add new movie</h2>
       </header>
+      <article>
+        <h2> Missing a great movie on the site?</h2>
+      </article>
       <form>
         <input id="title" type="text" name="title" placeholder="Title">
         <input id="year" type="text" name="year" placeholder="Year">
-        <input id="description" type="text" name="description" placeholder="description">
+        <input id="description" type="text" name="description" placeholder="Description">
         <input id="img" type="text" name="img" placeholder="Image URL">
         <button type="button" name="button" onclick="addNewMovie()">Save</button>
       </form>
-      <select>
         <section id="movies-by-add-container" class="grid-container">
           </section>
-        </select>
     </section>
 
 

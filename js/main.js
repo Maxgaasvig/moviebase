@@ -98,7 +98,7 @@ function appendMoviesByCategory(moviesByCategory) {
   // if no movies, display feedback to the user
   if (moviesByCategory.length === 0) {
     htmlTemplate = /*html*/ `
-      <p>No Movies </p>
+      <p> </p>
     `;
   }
   document.querySelector('#movies-by-category-container').innerHTML = htmlTemplate;
