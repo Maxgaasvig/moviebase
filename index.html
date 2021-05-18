@@ -18,7 +18,7 @@
     <a href="#movies">Movies</a>
     <a href="#watchlist">Watchlist</a>
     <a href="#addmovie">Add movie</a>
-    <a href="#profile">Profile</a>
+    <a href="#profile" onclick=appendUserData()>Profile</a>
   </nav>
 
   <!-- home -->
@@ -86,8 +86,6 @@
         <input type="text" id="name" placeholder="Type your name" required>
         <label for="mail">Mail</label>
         <input type="email" id="mail" placeholder="Type your mail" disabled>
-        <label for="birthdate">Birthdate</label>
-        <input type="text" id="birthdate" placeholder="Type your birthdate" required>
         <label for="hairColor">Profile Image</label>
         <input type="file" id="img" accept="image/*" onchange="previewImage(this.files[0], 'imagePreview')">
         <img id="imagePreview" class="image-preview">

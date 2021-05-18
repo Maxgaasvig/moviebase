@@ -69,9 +69,8 @@ function logout() {
 // append user data to profile page
 function appendUserData() {
   document.querySelector('#name').value = _currentUser.displayName;
+  console.log('hej');
   document.querySelector('#mail').value = _currentUser.email;
-  document.querySelector('#birthdate').value = _currentUser.birthdate;
-  document.querySelector('#hairColor').value = _currentUser.hairColor;
   document.querySelector('#imagePreview').src = _currentUser.img;
 }
 
@@ -81,14 +80,12 @@ function updateUser() {
 
   // update auth user
   user.updateProfile({
-    displayName: document.querySelector('#name').value
+    name: document.querySelector('#name').value
   });
 
   // update database user
   _userRef.doc(_currentUser.uid).set({
-    img: document.querySelector('#imagePreview').src,
-    birthdate: document.querySelector('#birthdate').value,
-    hairColor: document.querySelector('#hairColor').value
+    img: document.querySelector('#imagePreview').src
   }, {
     merge: true
   });
@@ -104,8 +101,28 @@ function previewImage(file, previewId) {
     reader.readAsDataURL(file);
   }
 }
+
+// ========== MOVIE FUNCTIONALITY ========== //
+
   // init all movies
   function init(){
+    _userRef.doc(_currentUser.uid).onSnapshot({
+      includeMetadataChanges: true
+    }, function (userData) {
+      if (!userData.metadata.hasPendingWrites && userData.data()) {
+        _currentUser = {
+          ...firebase.auth().currentUser,
+          ...userData.data()
+        }; //concating two objects: authUser object and userData objec from the db
+        //appendFavMovies(_currentUser.favMovies);
+        if (_movies) {
+          appendMovies(_movies); // refresh movies when user data changes
+        }
+        showLoader(false);
+      }
+    });
+
+
   _movieRef.orderBy("year").onSnapshot(snapshotData => {
     _movies = [];
     snapshotData.forEach(doc => {
@@ -118,7 +135,7 @@ function previewImage(file, previewId) {
     appendMovies(_movies);
       });
 }
-init();
+
 
 // append movies to the DOM using a for-of loop
 function appendMovies(movies) {
