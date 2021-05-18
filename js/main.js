@@ -225,30 +225,58 @@ function search(value) {
 
 
 
-// category selected event
-function categorySelected(categoryId) {
-  let htmlTemplate = "";
-
-  for (let moviecategory of _movies) {
-    if(moviecategory.category == categoryId){
-      document.querySelector('#movies-container').innerHTML ="";
-      showLoader(true);
-      htmlTemplate += /*html*/ `
-      <article>
-        <h2>${moviecategory.title} (${moviecategory.year})</h2>
-        <img src="${moviecategory.img}">
-        <p>${moviecategory.description}</p>
-      </article>
-    `;
-      showLoader(false);
-      
-    } else {
-      document.querySelector('#movies-by-category-container').innerHTML ="";
-    appendMovies(_movies);
-    }
-  }
-  document.querySelector('#movies-by-category-container').innerHTML = htmlTemplate;
-}
+// category selected event 
+// Virker ikke 
+// function categorySelected(categoryId) { 
+//   let htmlTemplate = ""; 
+ 
+//   for (let moviecategory of _movies) { 
+//     if(moviecategory.category.includes(categoryId)){ 
+//       document.querySelector('#movies-container').innerHTML =""; 
+//       showLoader(true); 
+//       console.log(moviecategory.category); 
+//       htmlTemplate += /*html*/ ` 
+//       <article> 
+//         <h2>${moviecategory.title} (${moviecategory.year})</h2> 
+//         <img src="${moviecategory.img}"> 
+//         <p>${moviecategory.description}</p> 
+//       </article> 
+//     `; 
+//       showLoader(false); 
+       
+//     } else{ 
+//     document.querySelector('#movies-by-category-container').innerHTML =""; 
+//     console.log("hejsa"); 
+//     appendMovies(_movies); 
+//     } 
+//   } 
+//   document.querySelector('#movies-by-category-container').innerHTML = htmlTemplate; 
+// } 
+ 
+ 
+// category selected event 
+// Virker 
+function categorySelected(categoryId) { 
+  appendMovies(_movies); 
+  let htmlTemplate = ""; 
+ 
+  for (let moviecategory of _movies) { 
+    if(moviecategory.category.includes(categoryId)){ 
+      document.querySelector('#movies-container').innerHTML =""; 
+      showLoader(true); 
+      console.log(moviecategory.category); 
+      htmlTemplate += /*html*/ ` 
+      <article> 
+        <h2>${moviecategory.title} (${moviecategory.year})</h2> 
+        <img src="${moviecategory.img}"> 
+        <p>${moviecategory.description}</p> 
+      </article> 
+    `; 
+      showLoader(false); 
+    }  
+  } 
+  document.querySelector('#movies-by-category-container').innerHTML = htmlTemplate; 
+} 
 
 
 
