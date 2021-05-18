@@ -225,44 +225,30 @@ function search(value) {
 
 
 
-// category selected event - fetch movies by selected category
+// category selected event
 function categorySelected(categoryId) {
-  document.querySelector('#movies-container').innerHTML ="";
+  let htmlTemplate = "";
 
   for (let moviecategory of _movies) {
     if(moviecategory.category == categoryId){
+      document.querySelector('#movies-container').innerHTML ="";
       showLoader(true);
-      appendMoviesByCategory(data);
-      showLoader(false);
-    } else {
-      document.querySelector('#movies-by-category-container').innerHTML ="";
-      appendMovies(_movies);
-    }
-  }
-}
-
-function appendMoviesByCategory(moviesByCategory) {
-  let htmlTemplate = "";
-  for (let movie of moviesByCategory) {
-    htmlTemplate += /*html*/ `
+      htmlTemplate += /*html*/ `
       <article>
-        <h2>${movie.title} (${movie.year})</h2>
-        <img src="${movie.img}">
-        <p>${movie.description}</p>
+        <h2>${moviecategory.title} (${moviecategory.year})</h2>
+        <img src="${moviecategory.img}">
+        <p>${moviecategory.description}</p>
       </article>
     `;
-  }
-  // if no movies, display feedback to the user
-  if (moviesByCategory.length === 0) {
-    htmlTemplate = /*html*/ `
-      <p> </p>
-    `;
+      showLoader(false);
+      
+    } else {
+      document.querySelector('#movies-by-category-container').innerHTML ="";
+    appendMovies(_movies);
+    }
   }
   document.querySelector('#movies-by-category-container').innerHTML = htmlTemplate;
 }
-
-
-
 
 
 
