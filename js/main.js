@@ -115,7 +115,7 @@ function previewImage(file, previewId) {
           ...firebase.auth().currentUser,
           ...userData.data()
         }; //concating two objects: authUser object and userData objec from the db
-        //appendFavMovies(_currentUser.favMovies);
+        appendFavMovies(_currentUser.favMovies);
         if (_movies) {
           appendMovies(_movies); // refresh movies when user data changes
         }
@@ -146,10 +146,68 @@ function appendMovies(movies) {
         <h2>${movie.title} (${movie.year})</h2>
         <img src="${movie.img}">
         <p>${movie.description}</p>
+        ${generateFavMovieButton(movie.id)}
       </article>
     `;
   }
   document.querySelector('#movies-container').innerHTML = htmlTemplate;
+}
+
+function generateFavMovieButton(movieId) {
+  let btnTemplate = /*html*/ `
+    <button onclick="addToFavourites('${movieId}')">Add to watchlist</button>`;
+  if (_currentUser.favMovies && _currentUser.favMovies.includes(movieId)) {
+    btnTemplate = /*html*/ `
+      <button onclick="removeFromFavourites('${movieId}')" class="rm">Remove from watchlist</button>`;
+  }
+  return btnTemplate;
+}
+
+
+// append favourite movies to the DOM
+async function appendFavMovies(favMovieIds = []) {
+  let htmlTemplate = "";
+  if (favMovieIds.length === 0) {
+    htmlTemplate += /*html*/ `
+    <article class="yo">
+      <p id=""></p>
+    </article>
+  `;
+  } else {
+    for (let movieId of favMovieIds) {
+      await _movieRef.doc(movieId).get().then(function (doc) {
+        let movie = doc.data();
+        movie.id = doc.id;
+        htmlTemplate += /*html*/ `
+        <article class="card">
+          <h2>${movie.title} (${movie.year})</h2>
+          <img src="${movie.img}">
+          <p>${movie.description}</p>
+          <button onclick="removeFromFavourites('${movie.id}')" class="rm">Remove from watchlist</button>
+        </article>
+      `;
+      });
+    }
+  }
+  document.querySelector('#fav-movie-container').innerHTML = htmlTemplate;
+}
+
+// adds a given movieId to the favMovies array inside _currentUser
+function addToFavourites(movieId) {
+  showLoader(true);
+  _userRef.doc(_currentUser.uid).set({
+    favMovies: firebase.firestore.FieldValue.arrayUnion(movieId)
+  }, {
+    merge: true
+  });
+}
+
+// removes a given movieId to the favMovies array inside _currentUser
+function removeFromFavourites(movieId) {
+  showLoader(true);
+  _userRef.doc(_currentUser.uid).update({
+    favMovies: firebase.firestore.FieldValue.arrayRemove(movieId)
+  });
 }
 
 // search functionality
@@ -230,3 +288,4 @@ function showLoader(show = true) {
     loader.classList.add("hide");
   }
 }
+
