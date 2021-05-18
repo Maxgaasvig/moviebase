@@ -7,6 +7,7 @@ const _movieRef = _db.collection("movies");
 const _userRef = _db.collection("users")
 let _currentUser;
 let _movies;
+let _categories = [];
 
 // ========== FIREBASE AUTH ========== //
 // Listen on authentication state change
@@ -131,7 +132,6 @@ function previewImage(file, previewId) {
       _movies.push(movie);
     });
     showLoader(false);
-    console.log(_movies);
     appendMovies(_movies);
       });
 }
@@ -150,6 +150,19 @@ function appendMovies(movies) {
     `;
   }
   document.querySelector('#movies-container').innerHTML = htmlTemplate;
+}
+
+// search functionality
+function search(value) {
+  let searchQuery = value.toLowerCase();
+  let filteredMovies = [];
+  for (let movie of _movies) {
+    let title = movie.title.toLowerCase();
+    if (title.includes(searchQuery)) {
+      filteredMovies.push(movie);
+    }
+  }
+  appendMovies(filteredMovies);
 }
 
 
