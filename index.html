@@ -7,16 +7,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="Movie Single Page Application">
   <meta name="author" content="Rasmus Cederdorff">
+  <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.css" />
   <link rel="stylesheet" href="css/main.css">
   <link rel="shortcut icon" type="image/png" href="img/favicon.png" />
 </head>
 
 <body onhashchange="pageChange()">
   <!-- tabbar navigation -->
-  <nav class="tabbar">
+  <nav id="tabbar" class="tabbar hide">
     <a href="#movies">Movies</a>
     <a href="#watchlist">Watchlist</a>
     <a href="#addmovie">Add movie</a>
+    <a href="#profile">Profile</a>
   </nav>
 
   <!-- home -->
@@ -63,13 +65,42 @@
       </article>
       <form>
         <input id="title" type="text" name="title" placeholder="Title">
-        <input id="year" type="text" name="year" placeholder="Year">
+        <input id="year" type="number" name="year" placeholder="Year">
+        <input id="genre" type="text" name="genre" placeholder="Genre">
         <input id="description" type="text" name="description" placeholder="Description">
-        <input id="img" type="text" name="img" placeholder="Image URL">
+        <input id="imageUrl" type="text" name="img" placeholder="Image URL">
         <button type="button" name="button" onclick="addNewMovie()">Save</button>
       </form>
         <section id="movies-by-add-container" class="grid-container">
           </section>
+    </section>
+
+    <!-- profile page -->
+    <section id="profile" class="page">
+      <header class="topbar">
+        <h2>Profile</h2>
+        <a class="right" href="#" onclick="logout()">Logout</a>
+      </header>
+      <form>
+        <label for="name">Name</label>
+        <input type="text" id="name" placeholder="Type your name" required>
+        <label for="mail">Mail</label>
+        <input type="email" id="mail" placeholder="Type your mail" disabled>
+        <label for="birthdate">Birthdate</label>
+        <input type="text" id="birthdate" placeholder="Type your birthdate" required>
+        <label for="hairColor">Profile Image</label>
+        <input type="file" id="img" accept="image/*" onchange="previewImage(this.files[0], 'imagePreview')">
+        <img id="imagePreview" class="image-preview">
+        <button type="button" name="button" onclick="updateUser()">Save</button>
+      </form>
+    </section>
+    <!-- login page -->
+    <section id="login" class="page">
+      <header class="topbar">
+        <h2>Login</h2>
+      </header>
+      <!-- firebase auth container  -->
+      <section id="firebaseui-auth-container"></section>
     </section>
 
 
@@ -80,13 +111,17 @@
 
  <!-- The core Firebase JS SDK is always required and must be listed first -->
 <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.4.1/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.4.1/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.js"></script>
 
 <!-- TODO: Add SDKs for Firebase products that you want to use
      https://firebase.google.com/docs/web/setup#available-libraries -->
-     
+      <!-- firebase config js file -->
      <script src="js/firebase-config.js"></script>
+     <!-- SPA functionality -->
      <script src="js/spa.js"></script>
+       <!-- main js file -->
      <script src="js/main.js"></script>
 </body>
 

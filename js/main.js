@@ -4,9 +4,106 @@
 // =========== Movie SPA functionality =========== //
 
 const _movieRef = _db.collection("movies");
+const _userRef = _db.collection("users")
+let _currentUser;
 let _movies;
 
+// ========== FIREBASE AUTH ========== //
+// Listen on authentication state change
+firebase.auth().onAuthStateChanged(function (user) {
+  if (user) { // if user exists and is authenticated
+    userAuthenticated(user);
+  } else { // if user is not logged in
+    userNotAuthenticated();
+  }
+});
 
+function userAuthenticated(user) {
+  _currentUser = user;
+  hideTabbar(false);
+  init();
+  showLoader(false);
+}
+
+function userNotAuthenticated() {
+  _currentUser = null; // reset _currentUser
+  hideTabbar(true);
+  showPage("login");
+
+  // Firebase UI configuration
+  const uiConfig = {
+    credentialHelper: firebaseui.auth.CredentialHelper.NONE,
+    signInOptions: [
+      firebase.auth.EmailAuthProvider.PROVIDER_ID
+    ],
+    signInSuccessUrl: '#movies'
+  };
+  // Init Firebase UI Authentication
+  const ui = new firebaseui.auth.AuthUI(firebase.auth());
+  ui.start('#firebaseui-auth-container', uiConfig);
+  showLoader(false);
+}
+
+// show and hide tabbar
+function hideTabbar(hide) {
+  let tabbar = document.querySelector('#tabbar');
+  if (hide) {
+    tabbar.classList.add("hide");
+  } else {
+    tabbar.classList.remove("hide");
+  }
+}
+
+// sign out user
+function logout() {
+  firebase.auth().signOut();
+  // reset input fields
+  document.querySelector('#name').value = "";
+  document.querySelector('#mail').value = "";
+  document.querySelector('#birthdate').value = "";
+  document.querySelector('#imagePreview').src = "";
+}
+
+
+// ========== PROFILE PAGE FUNCTIONALITY ========== //
+// append user data to profile page
+function appendUserData() {
+  document.querySelector('#name').value = _currentUser.displayName;
+  document.querySelector('#mail').value = _currentUser.email;
+  document.querySelector('#birthdate').value = _currentUser.birthdate;
+  document.querySelector('#hairColor').value = _currentUser.hairColor;
+  document.querySelector('#imagePreview').src = _currentUser.img;
+}
+
+// update user data - auth user and database object
+function updateUser() {
+  let user = firebase.auth().currentUser;
+
+  // update auth user
+  user.updateProfile({
+    displayName: document.querySelector('#name').value
+  });
+
+  // update database user
+  _userRef.doc(_currentUser.uid).set({
+    img: document.querySelector('#imagePreview').src,
+    birthdate: document.querySelector('#birthdate').value,
+    hairColor: document.querySelector('#hairColor').value
+  }, {
+    merge: true
+  });
+}
+
+// ========== Prieview image function ========== //
+function previewImage(file, previewId) {
+  if (file) {
+    let reader = new FileReader();
+    reader.onload = function (event) {
+      document.querySelector('#' + previewId).setAttribute('src', event.target.result);
+    };
+    reader.readAsDataURL(file);
+  }
+}
   // init all movies
   function init(){
   _movieRef.orderBy("year").onSnapshot(snapshotData => {
@@ -41,33 +138,32 @@ function appendMovies(movies) {
 
 
 
-/**
- * Adding a new movie to the Array of movies
 
- function addNewMovie() {
-  let titleInput = document.getElementById("title");
-  let yearInput = document.getElementById("year");
-  let descriptionInput = document.getElementById("description");
-  let imgInput = document.getElementById("img");
+ // Adding a new movie to the Array of movies
+// creates a new movie object and adds to firestore collection
+function addNewMovie() {
+  let inputTitle = document.getElementById("title");
+  let inputYear = document.getElementById("year");
+  let inputImageUrl = document.getElementById("imageUrl");
+  let inputDescription = document.getElementById("description");
 
   let newMovie = {
-    title: titleInput.value,
-    year: yearInput.value,
-    description: descriptionInput.value,
-    img: imgInput.value
+    title: inputTitle.value,
+    year: inputYear.value,
+    img: inputImageUrl.value,
+    description: inputDescription.value
   }
-
-  _movies.push(newMovie);
-  appendMovies(_movies);
-
-
-  //reset 
-titleInput.value = "";
+  // add to movie ref
+  _movieRef.add(newMovie);
+  //navigate to home
   navigateTo("movies");
-
-
+  // reset input values
+  inputTitle.value = "";
+  inputYear.value = "";
+  img: inputImageUrl.value = "";
+  inputDescription.value = "";
 }
- */
+
 
 // =========== Loader functionality =========== //
 
