@@ -7,6 +7,7 @@ const _movieRef = _db.collection("movies");
 const _userRef = _db.collection("users")
 let _currentUser;
 let _movies;
+let _categories = [];
 
 // ========== FIREBASE AUTH ========== //
 // Listen on authentication state change
@@ -105,8 +106,8 @@ function previewImage(file, previewId) {
   }
 }
   // init all movies
-  function init(){
-  _movieRef.orderBy("year").onSnapshot(snapshotData => {
+  function initMovies(){
+  _movieRef.orderBy("title").onSnapshot(snapshotData => {
     _movies = [];
     snapshotData.forEach(doc => {
       let movie = doc.data();
@@ -114,11 +115,38 @@ function previewImage(file, previewId) {
       _movies.push(movie);
     });
     showLoader(false);
-    console.log(_movies);
     appendMovies(_movies);
       });
 }
-init();
+
+ // init all categories
+ function initCategories(){
+  _movieRef.orderBy("category").onSnapshot(snapshotData => {
+    snapshotData.forEach(doc => {
+      let category = doc.data();
+      category.id = doc.id;
+      _categories.push(category);
+    });
+    showLoader(false);
+    console.log(_categories);
+    appendCategories(_categories);
+      });
+}
+initMovies();
+initCategories();
+
+console.log(_categories);
+
+function appendCategories(categories) {
+  let htmlTemplate = "";
+  for (let category of categories) {
+    htmlTemplate += /*html*/ `
+      <option>${category.name}</option>
+    `;
+  }
+  document.querySelector('#select-category').innerHTML += htmlTemplate;
+}
+
 
 // append movies to the DOM using a for-of loop
 function appendMovies(movies) {
@@ -133,6 +161,19 @@ function appendMovies(movies) {
     `;
   }
   document.querySelector('#movies-container').innerHTML = htmlTemplate;
+}
+
+// search functionality
+function search(value) {
+  let searchQuery = value.toLowerCase();
+  let filteredMovies = [];
+  for (let movie of _movies) {
+    let title = movie.title.toLowerCase();
+    if (title.includes(searchQuery)) {
+      filteredMovies.push(movie);
+    }
+  }
+  appendMovies(filteredMovies);
 }
 
 
