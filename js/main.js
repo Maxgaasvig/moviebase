@@ -137,17 +137,6 @@ initCategories();
 
 console.log(_categories);
 
-function appendCategories(categories) {
-  let htmlTemplate = "";
-  for (let category of categories) {
-    htmlTemplate += /*html*/ `
-      <option>${category.name}</option>
-    `;
-  }
-  document.querySelector('#select-category').innerHTML += htmlTemplate;
-}
-
-
 // append movies to the DOM using a for-of loop
 function appendMovies(movies) {
   let htmlTemplate = "";
@@ -175,6 +164,45 @@ function search(value) {
   }
   appendMovies(filteredMovies);
 }
+
+
+
+// category selected event - fetch movies by selected category
+function categorySelected(categoryId) {
+  document.querySelector('#movies-container').innerHTML ="";
+
+  for (let moviecategory of _movies) {
+    if(moviecategory.category == categoryId){
+      showLoader(true);
+      appendMoviesByCategory(data);
+      showLoader(false);
+    } else {
+      document.querySelector('#movies-by-category-container').innerHTML ="";
+      appendMovies(_movies);
+    }
+  }
+}
+
+function appendMoviesByCategory(moviesByCategory) {
+  let htmlTemplate = "";
+  for (let movie of moviesByCategory) {
+    htmlTemplate += /*html*/ `
+      <article>
+        <h2>${movie.title} (${movie.year})</h2>
+        <img src="${movie.img}">
+        <p>${movie.description}</p>
+      </article>
+    `;
+  }
+  // if no movies, display feedback to the user
+  if (moviesByCategory.length === 0) {
+    htmlTemplate = /*html*/ `
+      <p> </p>
+    `;
+  }
+  document.querySelector('#movies-by-category-container').innerHTML = htmlTemplate;
+}
+
 
 
 
