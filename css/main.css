@@ -232,6 +232,10 @@ iframe {
   height: 250px;
 }
 
+#movies-by-category-container {
+  padding: 0%;
+}
+
 
 /*-------- sogresultater ---------*/
 
@@ -239,7 +243,11 @@ iframe {
   display: flex;
   justify-content: flex-end;
   padding: 10px 10px;
+}
 
+.sogresultater select, input {
+  font-size: 15px;
+  padding: 0.6%;
 }
 
 #select-category, #searchbar{
