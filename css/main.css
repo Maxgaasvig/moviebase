@@ -27,6 +27,9 @@ h1 {
   letter-spacing: 3px;
 }
 
+#sitename {
+  color: red;
+}
 /* ---------- topbar styling ---------- */
 .topbar {
   background-color: var(--green);
@@ -43,6 +46,7 @@ h1 {
 .topbar h2 {
   margin: 0;
   font-weight: 300;
+  color: red;
 }
 
 
@@ -242,23 +246,8 @@ iframe {
   margin: 10px;
 }
 
-form {
-  margin: auto;
-}
 
-form button {
-  font-weight: 100;
-  text-align: center;
-  cursor: pointer;
-  border: none;
-  padding: 5px 5px;
-  font-size: 0.5em;
-  border-radius: 0;
-  color: #ffffff !important;
-  background-color: rgb(38, 76, 89);
-  width: 100%;
-  max-width: 200px;
-}
+
 
 input, select {
   -webkit-appearance: none;
@@ -288,7 +277,7 @@ input, select {
   font-size: 1em;
   border-radius: 0;
   color: #ffffff !important;
-  background-color: rgb(38, 76, 89);
+  background-color: rgb(207, 0, 0);
   width: 100%;
   max-width: 350px;
 }
@@ -305,6 +294,27 @@ input, select {
   border: 0;
 }
 
+.headingadd {
+  padding: 1.5%;
+}
+
+/*-------- watchlist page ---------*/
+
+.card button {
+  background-color: rgb(207, 0, 0);
+  color: #fff;
+  text-align: center;
+  cursor: pointer;
+  border: none;
+  padding: 12px 15px;
+  border-radius: 0;
+  width: 60%;
+  max-width: 350px;
+}
+
+.headingwatch {
+  padding-top: 1.5%;
+}
 
 /* ---------- card styling ---------- */
 
@@ -348,16 +358,16 @@ input, select {
 .mdl-button--raised.mdl-button--colored,
 .mdl-button--raised.mdl-button--colored:active,
 .mdl-button--raised.mdl-button--colored:hover {
-  background: var(--green);
+  background-color: rgb(207, 0, 0);
   color: #fff;
-  border-radius: 0;
+
 }
 
 .firebaseui-textfield.mdl-textfield .firebaseui-label::after {
   background-color: var(--green);
 }
 
-/* ---------- input form stryling ---------- */
+/* ---------- input form styling ---------- */
 #profile form {
   padding: 2em 1em 2.5em;
 }
@@ -371,22 +381,12 @@ input, select {
   font-size: 1em;
   border-radius: 0;
   color: var(--text-color-light);
-  background-color: var(--green);
+  background-color: rgb(207, 0, 0);
   width: 100%;
   max-width: 350px;
 }
 
-#profile article button {
-  font-weight: 300;
-  text-align: center;
-  cursor: pointer;
-  border: none;
-  padding: 10px 8px;
-  border-radius: 0;
-  color: var(--text-color-light);
-  background-color: var(--green);
-  width: 100%;
-}
+
 
 #profile article button.rm {
   background-color: var(--light-green);
@@ -411,6 +411,13 @@ input, select {
   display: block;
 }
 
+#profile img {
+  width: 13%;
+  padding-bottom: 2%;
+  display: flex;
+  margin: 0 auto;
+
+}
 /* Grid container */
 .grid-container {
   display: grid;
@@ -438,7 +445,6 @@ input, select {
 
 .grid-container>article img {
   max-width: 250px;
-  width: 100%;
   margin-bottom: 1em;
 }
 
