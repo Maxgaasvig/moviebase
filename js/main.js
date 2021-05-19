@@ -176,7 +176,7 @@ async function appendFavMovies(favMovieIds = []) {
   let htmlTemplate = "";
   if (favMovieIds.length === 0) {
     htmlTemplate += /*html*/ `
-    <article class="yo">
+    <article>
       <p id=""></p>
     </article>
   `;
