@@ -61,7 +61,6 @@ function logout() {
   // reset input fields
   document.querySelector('#name').value = "";
   document.querySelector('#mail').value = "";
-  document.querySelector('#birthdate').value = "";
   document.querySelector('#imagePreview').src = "";
 }
 

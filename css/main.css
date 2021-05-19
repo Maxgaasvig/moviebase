@@ -424,6 +424,8 @@ input, select {
   padding-bottom: 2%;
   display: flex;
   margin: 0 auto;
+  justify-content: center;
+  text-align: center;
 
 }
 /* Grid container */
@@ -462,6 +464,11 @@ input, select {
 
 .image-preview {
   width: 100%;
-  height: auto;
   margin: 1em 0;
+  display:flex;
+  margin: 0 auto;
+}
+
+#imagePreview {
+  display:none;
 }
