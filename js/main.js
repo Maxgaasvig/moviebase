@@ -152,6 +152,14 @@ function appendMovies(movies) {
   document.querySelector('#movies-container').innerHTML = htmlTemplate;
 }
 
+function gotoMovies(){
+  console.log("yoyoyo");
+  document.querySelector('#movies-container').innerHTML ="";
+  document.querySelector('#movies-by-category-container').innerHTML = "";
+  document.querySelector('#select-category').selectedIndex = "0"
+  init();
+}
+
 function generateFavMovieButton(movieId) {
   let btnTemplate = /*html*/ `
     <button onclick="addToFavourites('${movieId}')">Add to watchlist</button>`;
@@ -199,6 +207,8 @@ function addToFavourites(movieId) {
   }, {
     merge: true
   });
+  document.querySelector('#movies-container').innerHTML ="";
+  document.querySelector('#movies-by-category-container').innerHTML = "";
 }
 
 // removes a given movieId to the favMovies array inside _currentUser
@@ -207,6 +217,8 @@ function removeFromFavourites(movieId) {
   _userRef.doc(_currentUser.uid).update({
     favMovies: firebase.firestore.FieldValue.arrayRemove(movieId)
   });
+  document.querySelector('#movies-container').innerHTML ="";
+  document.querySelector('#movies-by-category-container').innerHTML = "";
 }
 
 // search functionality
@@ -220,6 +232,8 @@ function search(value) {
     }
   }
   appendMovies(filteredMovies);
+  document.querySelector('#movies-by-category-container').innerHTML = "";
+
 }
 
 
@@ -259,16 +273,17 @@ function categorySelected(categoryId) {
   appendMovies(_movies); 
   let htmlTemplate = ""; 
  
-  for (let moviecategory of _movies) { 
-    if(moviecategory.category.includes(categoryId)){ 
+  for (let movie of _movies) { 
+    if(movie.category.includes(categoryId)){ 
       document.querySelector('#movies-container').innerHTML =""; 
       showLoader(true); 
-      console.log(moviecategory.category); 
+      console.log(movie.category); 
       htmlTemplate += /*html*/ ` 
-      <article> 
-        <h2>${moviecategory.title} (${moviecategory.year})</h2> 
-        <img src="${moviecategory.img}"> 
-        <p>${moviecategory.description}</p> 
+      <article class="card"> 
+        <h2>${movie.title} (${movie.year})</h2> 
+        <img src="${movie.img}"> 
+        <p>${movie.description}</p> 
+        ${generateFavMovieButton(movie.id)}
       </article> 
     `; 
       showLoader(false); 
