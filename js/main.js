@@ -157,6 +157,7 @@ function gotoMovies(){
   document.querySelector('#movies-container').innerHTML ="";
   document.querySelector('#movies-by-category-container').innerHTML = "";
   document.querySelector('#select-category').selectedIndex = "0"
+  document.querySelector('#searchbar').value = "";
   init();
 }
 
@@ -207,8 +208,9 @@ function addToFavourites(movieId) {
   }, {
     merge: true
   });
-  document.querySelector('#movies-container').innerHTML ="";
+  document.querySelector('#select-category').selectedIndex = "0"
   document.querySelector('#movies-by-category-container').innerHTML = "";
+  document.querySelector('#searchbar').value = "";
 }
 
 // removes a given movieId to the favMovies array inside _currentUser
@@ -217,7 +219,6 @@ function removeFromFavourites(movieId) {
   _userRef.doc(_currentUser.uid).update({
     favMovies: firebase.firestore.FieldValue.arrayRemove(movieId)
   });
-  document.querySelector('#movies-container').innerHTML ="";
   document.querySelector('#movies-by-category-container').innerHTML = "";
 }
 
