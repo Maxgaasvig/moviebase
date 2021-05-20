@@ -5,7 +5,7 @@
 
 const _movieRef = _db.collection("movies");
 const _userRef = _db.collection("users")
-let _currentUser;
+let _thisUser;
 let _movies;
 let _categories = [];
 
@@ -20,15 +20,15 @@ firebase.auth().onAuthStateChanged(function (user) {
 });
 
 function userAuthenticated(user) {
-  _currentUser = user;
-  hideTabbar(false);
+  _thisUser = user;
+  hideLowbar(false);
   init();
   showLoader(false);
 }
 
 function userNotAuthenticated() {
-  _currentUser = null; // reset _currentUser
-  hideTabbar(true);
+  _thisUser = null; // reset _thisUser
+  hideLowbar(true);
   showPage("login");
 
   // Firebase UI configuration
@@ -45,13 +45,13 @@ function userNotAuthenticated() {
   showLoader(false);
 }
 
-// show and hide tabbar
-function hideTabbar(hide) {
-  let tabbar = document.querySelector('#tabbar');
+// show and hide lowbar
+function hideLowbar(hide) {
+  let lowbar = document.querySelector('#lowbar');
   if (hide) {
-    tabbar.classList.add("hide");
+    lowbar.classList.add("hide");
   } else {
-    tabbar.classList.remove("hide");
+    lowbar.classList.remove("hide");
   }
 }
 
@@ -68,9 +68,9 @@ function logout() {
 // ========== PROFILE PAGE FUNCTIONALITY ========== //
 // append user data to profile page
 function appendUserData() {
-  document.querySelector('#name').value = _currentUser.displayName;
-  document.querySelector('#mail').value = _currentUser.email;
-  document.querySelector('#imagePreview').src = _currentUser.img; 
+  document.querySelector('#name').value = _thisUser.displayName;
+  document.querySelector('#mail').value = _thisUser.email;
+  document.querySelector('#imagePreview').src = _thisUser.img; 
 }
 
 // update user data - auth user and database object
@@ -83,7 +83,7 @@ function updateUser() {
   });
 
   // update database user
-  _userRef.doc(_currentUser.uid).set({
+  _userRef.doc(_thisUser.uid).set({
     img: document.querySelector('#imagePreview').src
   }, {
     merge: true
@@ -105,15 +105,15 @@ function previewImage(file, previewId) {
 
   // init all movies
   function init(){
-    _userRef.doc(_currentUser.uid).onSnapshot({
+    _userRef.doc(_thisUser.uid).onSnapshot({
       includeMetadataChanges: true
     }, function (userData) {
       if (!userData.metadata.hasPendingWrites && userData.data()) {
-        _currentUser = {
+        _thisUser = {
           ...firebase.auth().currentUser,
           ...userData.data()
         }; //concating two objects: authUser object and userData objec from the db
-        appendFavMovies(_currentUser.favMovies);
+        appendWatchlistMovies(_thisUser.favMovies);
         if (_movies) {
           appendMovies(_movies); // refresh movies when user data changes
         }
@@ -122,9 +122,9 @@ function previewImage(file, previewId) {
     });
 
 
-  _movieRef.orderBy("year").onSnapshot(snapshotData => {
+  _movieRef.orderBy("year").onSnapshot(moviesData => {
     _movies = [];
-    snapshotData.forEach(doc => {
+    moviesData.forEach(doc => {
       let movie = doc.data();
       movie.id = doc.id;
       _movies.push(movie);
@@ -144,7 +144,7 @@ function appendMovies(movies) {
         <h2>${movie.title} (${movie.year})</h2>
         <img src="${movie.img}">
         <p>${movie.description}</p>
-        ${generateFavMovieButton(movie.id)}
+        ${createWatchlistButton(movie.id)}
       </article>
     `;
   }
@@ -152,7 +152,6 @@ function appendMovies(movies) {
 }
 
 function gotoMovies(){
-  console.log("yoyoyo");
   document.querySelector('#movies-container').innerHTML ="";
   document.querySelector('#movies-by-category-container').innerHTML = "";
   document.querySelector('#select-category').selectedIndex = "0"
@@ -160,19 +159,19 @@ function gotoMovies(){
   init();
 }
 
-function generateFavMovieButton(movieId) {
+function createWatchlistButton(movieId) {
   let btnTemplate = /*html*/ `
-    <button onclick="addToFavourites('${movieId}')">Add to watchlist</button>`;
-  if (_currentUser.favMovies && _currentUser.favMovies.includes(movieId)) {
+    <button onclick="addToWatchlist('${movieId}')">Add to watchlist</button>`;
+  if (_thisUser.favMovies && _thisUser.favMovies.includes(movieId)) {
     btnTemplate = /*html*/ `
-      <button onclick="removeFromFavourites('${movieId}')" class="rm">Remove from watchlist</button>`;
+      <button onclick="removeFromWatchlist('${movieId}')" class="btnRemove">Remove from watchlist</button>`;
   }
   return btnTemplate;
 }
 
 
 // append favourite movies to the DOM
-async function appendFavMovies(favMovieIds = []) {
+async function appendWatchlistMovies(favMovieIds = []) {
   let htmlTemplate = "";
   if (favMovieIds.length === 0) {
     htmlTemplate += /*html*/ `
@@ -190,7 +189,7 @@ async function appendFavMovies(favMovieIds = []) {
           <h2>${movie.title} (${movie.year})</h2>
           <img src="${movie.img}">
           <p>${movie.description}</p>
-          <button onclick="removeFromFavourites('${movie.id}')" class="rm">Remove from watchlist</button>
+          <button onclick="removeFromWatchlist('${movie.id}')" class="rm">Remove from watchlist</button>
         </article>
       `;
       });
@@ -200,9 +199,9 @@ async function appendFavMovies(favMovieIds = []) {
 }
 
 // adds a given movieId to the favMovies array inside _currentUser
-function addToFavourites(movieId) {
+function addToWatchlist(movieId) {
   showLoader(true);
-  _userRef.doc(_currentUser.uid).set({
+  _userRef.doc(_thisUser.uid).set({
     favMovies: firebase.firestore.FieldValue.arrayUnion(movieId)
   }, {
     merge: true
@@ -213,9 +212,9 @@ function addToFavourites(movieId) {
 }
 
 // removes a given movieId to the favMovies array inside _currentUser
-function removeFromFavourites(movieId) {
+function removeFromWatchlist(movieId) {
   showLoader(true);
-  _userRef.doc(_currentUser.uid).update({
+  _userRef.doc(_thisUser.uid).update({
     favMovies: firebase.firestore.FieldValue.arrayRemove(movieId)
   });
   document.querySelector('#movies-by-category-container').innerHTML = "";
@@ -279,7 +278,7 @@ function categorySelected(categoryId){
 }
 
 
-function capitalizeFirstLetter(string) {
+function categoryFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
@@ -292,7 +291,7 @@ function addNewMovie() {
   let inputImageUrl = document.getElementById("imageUrl");
   let inputDescription = document.getElementById("description");
 
-  capitalizeFirstLetter(inputCategori.value)
+  categoryFirstLetter(inputCategori.value)
 
   console.log(inputCategori.value);
 
