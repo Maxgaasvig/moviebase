@@ -70,11 +70,16 @@
         <h2 class="headingadd"> Missing a great movie on the site?</h2>
       </article>
       <form>
-        <input id="title" type="text" name="title" placeholder="Title">
-        <input id="year" type="number" name="year" placeholder="Year">
-        <input id="genre" type="text" name="genre" placeholder="Genre">
-        <input id="description" type="text" name="description" placeholder="Description">
-        <input id="imageUrl" type="text" name="img" placeholder="Image URL">
+        <label for="title">Title</label>
+        <input id="title" type="text" name="title" placeholder="Movie title">
+        <label for="year">Year</label>
+        <input id="year" type="number" name="year" placeholder="Release year">
+        <label for="genres">Genres</label>
+        <input id="genre" type="text" name="genre" placeholder="Action, etc, etc,">
+        <label for="description">Description</label>
+        <input id="description" type="text" name="description" placeholder="Movie description">
+        <label for="imageUrl">Image</label>
+        <input id="imageUrl" type="text" name="img" placeholder="Insert Image URL">
         <button type="button" name="button" onclick="addNewMovie()">Save</button>
       </form>
         <section id="movies-by-add-container" class="grid-container">

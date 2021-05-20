@@ -69,9 +69,8 @@ function logout() {
 // append user data to profile page
 function appendUserData() {
   document.querySelector('#name').value = _currentUser.displayName;
-  console.log('hej');
   document.querySelector('#mail').value = _currentUser.email;
-  document.querySelector('#imagePreview').src = _currentUser.img;
+  document.querySelector('#imagePreview').src = _currentUser.img; 
 }
 
 // update user data - auth user and database object
@@ -236,76 +235,71 @@ function search(value) {
   document.querySelector('#movies-by-category-container').innerHTML = "";
 
 }
-
-
-
-// category selected event 
-// Virker ikke 
-// function categorySelected(categoryId) { 
-//   let htmlTemplate = ""; 
- 
-//   for (let moviecategory of _movies) { 
-//     if(moviecategory.category.includes(categoryId)){ 
-//       document.querySelector('#movies-container').innerHTML =""; 
-//       showLoader(true); 
-//       console.log(moviecategory.category); 
-//       htmlTemplate += /*html*/ ` 
-//       <article> 
-//         <h2>${moviecategory.title} (${moviecategory.year})</h2> 
-//         <img src="${moviecategory.img}"> 
-//         <p>${moviecategory.description}</p> 
-//       </article> 
-//     `; 
-//       showLoader(false); 
-       
-//     } else{ 
-//     document.querySelector('#movies-by-category-container').innerHTML =""; 
-//     console.log("hejsa"); 
-//     appendMovies(_movies); 
-//     } 
-//   } 
-//   document.querySelector('#movies-by-category-container').innerHTML = htmlTemplate; 
-// } 
- 
  
 // category selected event 
 // Virker 
-function categorySelected(categoryId) { 
-  appendMovies(_movies); 
-  let htmlTemplate = ""; 
+// function categorySelected(categoryId) { 
+//   appendMovies(_movies); 
+//   let htmlTemplate = ""; 
  
-  for (let movie of _movies) { 
-    if(movie.category.includes(categoryId)){ 
-      document.querySelector('#movies-container').innerHTML =""; 
-      showLoader(true); 
-      console.log(movie.category); 
-      htmlTemplate += /*html*/ ` 
-      <article class="card"> 
-        <h2>${movie.title} (${movie.year})</h2> 
-        <img src="${movie.img}"> 
-        <p>${movie.description}</p> 
-        ${generateFavMovieButton(movie.id)}
-      </article> 
-    `; 
-      showLoader(false); 
-    }  
-  } 
-  document.querySelector('#movies-by-category-container').innerHTML = htmlTemplate; 
-} 
+//   for (let movie of _movies) { 
+//     if(movie.category.includes(categoryId)){ 
+//       document.querySelector('#movies-container').innerHTML =""; 
+//       showLoader(true); 
+//       console.log(movie.category); 
+//       htmlTemplate += /*html*/ ` 
+//       <article class="card"> 
+//         <h2>${movie.title} (${movie.year})</h2> 
+//         <img src="${movie.img}"> 
+//         <p>${movie.description}</p> 
+//         ${generateFavMovieButton(movie.id)}
+//       </article> 
+//     `; 
+//       showLoader(false); 
+//     }  
+//   } 
+//   document.querySelector('#movies-by-category-container').innerHTML = htmlTemplate; 
+// } 
 
 
+function categorySelected(categoryId){
+  showLoader(true);
+  if(categoryId){
+    let moviesByCategory = [];
+    for (let movie of _movies) {
+      if(movie.category.includes(categoryId)){
+        moviesByCategory.push(movie);
+      }
+    }
+    appendMovies(moviesByCategory);
+  } else{
+    appendMovies(_movies);
+  }
+  showLoader(false);
+}
+
+
+function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
 
  // Adding a new movie to the Array of movies
 // creates a new movie object and adds to firestore collection
 function addNewMovie() {
   let inputTitle = document.getElementById("title");
   let inputYear = document.getElementById("year");
+  let inputCategori = document.getElementById("genre");
   let inputImageUrl = document.getElementById("imageUrl");
   let inputDescription = document.getElementById("description");
+
+  capitalizeFirstLetter(inputCategori.value)
+
+  console.log(inputCategori.value);
 
   let newMovie = {
     title: inputTitle.value,
     year: inputYear.value,
+    category: inputCategori.value,
     img: inputImageUrl.value,
     description: inputDescription.value
   }
@@ -316,6 +310,7 @@ function addNewMovie() {
   // reset input values
   inputTitle.value = "";
   inputYear.value = "";
+  inputCategori ="";
   img: inputImageUrl.value = "";
   inputDescription.value = "";
 }
