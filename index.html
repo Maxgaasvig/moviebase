@@ -28,6 +28,11 @@
     </header>
 <!-- searchbar -->
     <section class="sogresultater">
+      <select id="select-sort" onchange="sort(this.value)">
+        <option value="notSorted"> Ikke sorteret </option>
+        <option value="sortByTitles"> A-Z sortering </option>
+        <option value="sortByYear"> Års sortering </option>
+      </select>
       <select id="select-category" onchange="categorySelected(this.value)">
         <option value="">Show all movies</option>
         <option value="Crime">Crime</option>

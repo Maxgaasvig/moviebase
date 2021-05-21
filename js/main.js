@@ -9,6 +9,7 @@ let _thisUser;
 let _movies;
 let _categories = [];
 
+
 // ========== FIREBASE AUTH ========== //
 // Listen on authentication state change
 firebase.auth().onAuthStateChanged(function (user) {
@@ -71,6 +72,7 @@ function appendUserData() {
   document.querySelector('#name').value = _thisUser.displayName;
   document.querySelector('#mail').value = _thisUser.email;
   document.querySelector('#imagePreview').src = _thisUser.img; 
+  console.log(_thisUser.img);
 }
 
 // update user data - auth user and database object
@@ -234,31 +236,43 @@ function search(value) {
   document.querySelector('#movies-by-category-container').innerHTML = "";
 
 }
+
+function sort(sortValue){
+  let sortMovies = [];
+  for (let movie of _movies) {
+    sortMovies.push(movie);
+  }
+
+
+  if(sortValue.includes('notSorted')){
+    console.log("The List aint sorted");
+    appendMovies(_movies);
+  }
+  
+ if(sortValue.includes('sortByTitles')){
+   console.log("Sorted by Titles");
+  sortMovies.sort((a, b) => {
+    let fa = a.title.toLowerCase(),
+        fb = b.title.toLowerCase();
+
+    if (fa < fb) {
+        return -1;
+    }
+    if (fa > fb) {
+        return 1;
+    }
+    return 0;
+});
+    appendMovies(sortMovies);
+ }
  
-// category selected event 
-// Virker 
-// function categorySelected(categoryId) { 
-//   appendMovies(_movies); 
-//   let htmlTemplate = ""; 
- 
-//   for (let movie of _movies) { 
-//     if(movie.category.includes(categoryId)){ 
-//       document.querySelector('#movies-container').innerHTML =""; 
-//       showLoader(true); 
-//       console.log(movie.category); 
-//       htmlTemplate += /*html*/ ` 
-//       <article class="card"> 
-//         <h2>${movie.title} (${movie.year})</h2> 
-//         <img src="${movie.img}"> 
-//         <p>${movie.description}</p> 
-//         ${generateFavMovieButton(movie.id)}
-//       </article> 
-//     `; 
-//       showLoader(false); 
-//     }  
-//   } 
-//   document.querySelector('#movies-by-category-container').innerHTML = htmlTemplate; 
-// } 
+ if(sortValue.includes("sortByYear")){
+    console.log("Sorted by Year");
+    sortMovies.sort(function(a, b){return b.year-a.year});
+    appendMovies(sortMovies);
+  } 
+}
+
 
 
 function categorySelected(categoryId){
