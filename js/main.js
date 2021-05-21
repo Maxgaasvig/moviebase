@@ -273,6 +273,30 @@ function sort(sortValue){
   } 
 }
 
+// category selected event 
+// Virker 
+// function categorySelected(categoryId) { 
+//   appendMovies(_movies); 
+//   let htmlTemplate = ""; 
+ 
+//   for (let movie of _movies) { 
+//     if(movie.category.includes(categoryId)){ 
+//       document.querySelector('#movies-container').innerHTML =""; 
+//       showLoader(true); 
+//       console.log(movie.category); 
+//       htmlTemplate += /*html*/ ` 
+//       <article class="card"> 
+//         <h2>${movie.title} (${movie.year})</h2> 
+//         <img src="${movie.img}"> 
+//         <p>${movie.description}</p> 
+//         ${generateFavMovieButton(movie.id)}
+//       </article> 
+//     `; 
+//       showLoader(false); 
+//     }  
+//   } 
+//   document.querySelector('#movies-by-category-container').innerHTML = htmlTemplate; 
+// } 
 
 
 function categorySelected(categoryId){
