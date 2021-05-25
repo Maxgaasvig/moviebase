@@ -3,11 +3,14 @@
 
 // =========== Movie SPA functionality =========== //
 
+
 const _movieRef = _db.collection("movies");
 const _userRef = _db.collection("users")
 let _thisUser;
 let _movies;
 let _categories = [];
+
+let _movieID = "";
 
 
 // ========== FIREBASE AUTH ========== //
@@ -147,11 +150,41 @@ function appendMovies(movies) {
         <img src="${movie.img}">
         <p>${movie.description}</p>
         ${createWatchlistButton(movie.id)}
-      </article>
+        <button onclick="selectUser('${movie.id}','${movie.title}','${movie.description}','${movie.img}')">View</button>
+      </article> 
     `;
   }
   document.querySelector('#movies-container').innerHTML = htmlTemplate;
 }
+
+function selectUser(id, title, desc, img) {
+  // references to the input fields
+  let titleInput = document.querySelector('#viewTitle');
+  let descInput = document.querySelector('#viewDesc');
+  let imageInput = document.querySelector('#viewImage');
+
+  imageInput.src = img;
+  titleInput.innerHTML = title;
+  descInput.innerHTML = desc;
+  _movieID = id;
+  navigateTo("edit");
+}
+
+
+function updateUser() {
+  let nameInput = document.querySelector('#name-update');
+  let mailInput = document.querySelector('#mail-update');
+  let imageInput = document.querySelector('#imagePreviewUpdate');
+
+  let userToUpdate = {
+    name: nameInput.value,
+    mail: mailInput.value,
+    img: imageInput.src
+  };
+  _userRef.doc(_selectedUserId).update(userToUpdate);
+  navigateTo("home");
+}
+
 
 function gotoMovies(){
   document.querySelector('#movies-container').innerHTML ="";
@@ -363,4 +396,6 @@ function showLoader(show = true) {
     loader.classList.add("hide");
   }
 }
+
+
 

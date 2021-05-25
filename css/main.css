@@ -30,6 +30,8 @@ h1 {
 #sitename {
   color: red;
 }
+
+/* #region topbar styling */
 /* ---------- topbar styling ---------- */
 .topbar {
   background-color: var(--green);
@@ -49,8 +51,10 @@ h1 {
   color: red;
 }
 
+/* #endregion topbar styling */
 
 
+/* #region lowbar styling */
 
 /* ---------- lowbar styling ---------- */
 .lowbar {
@@ -104,6 +108,8 @@ h1 {
   background-color: var(--light-green);
   color: var(--text-color-light);
 }
+
+/* #endregion lowbar styling */
 
 /* ---------- page styling ---------- */
 .page {
@@ -201,6 +207,8 @@ h1 {
   grid-template-columns: 100%;
   padding: 15px;
 }
+
+
 
 @media (min-width: 600px) {
   .grid-container {
@@ -467,6 +475,23 @@ input, select {
   margin: 0 auto;
 }
 
-#imagePreview {
-  
+.viewDetails{
+  display: flex;
+
+}
+
+#viewImage{
+  margin-right: 0;
+  margin-left: 15%;
+  padding-top: 3%;
+  width: 20%;
+  height: 30%;
+}
+
+#viewDesc{
+  margin-left: 0;
+  text-align: center;
+  justify-content: center;
+  margin: auto 6%;
+  width: 40%;
 }

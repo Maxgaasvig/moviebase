@@ -5,6 +5,7 @@
 const _firebaseConfig = {
   apiKey: "AIzaSyCNkrsxtSHqvYA_4g28GqGrkBGT1PUdOtc",
   authDomain: "eksamensmovies.firebaseapp.com",
+  databaseURL: "https://eksamensmovies-default-rtdb.europe-west1.firebasedatabase.app",
   projectId: "eksamensmovies",
   storageBucket: "eksamensmovies.appspot.com",
   messagingSenderId: "269522479789",
