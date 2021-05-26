@@ -151,10 +151,15 @@ function previewImage(file, previewId) {
 }
 
 
-// append movies to the DOM using a for-of loop
+// append movies to the DOM using a for-of loop.
+// Has 1 parameter
 function appendMovies(movies) {
+  // creates a html template and sets its value to "";
   let htmlTemplate = "";
+  // Runs a for-of loop, with an variable "movie" and runs through "movies" which is the parameter needed in the function
   for (let movie of movies) {
+    // Adds the following to the current html template with the use of "+=".
+    // Creates a article tag and gives it the class "card". Adds additional tags and sets the value of those to the current object's value with the ${}
     htmlTemplate += /*html*/ `
       <article class="card">
         <h2>${movie.title} (${movie.year})</h2>
@@ -164,9 +169,11 @@ function appendMovies(movies) {
       </article> 
     `;
   }
+  // Changes #movie-container's innerHTML to htmlTemplate.
   document.querySelector('#movies-container').innerHTML = htmlTemplate;
 }
 
+// Gets a movies details for our view page
 function viewMovieDetails(id) {
   let movie = _movies.find(movie => movie.id === id);
   // references to the input fields
@@ -177,7 +184,7 @@ function viewMovieDetails(id) {
   imageInput.src = movie.img;
   titleInput.innerHTML = movie.title;
   descInput.innerHTML = movie.description;
-  navigateTo("edit");
+  navigateTo("view");
 }
 
 
@@ -215,7 +222,7 @@ function createWatchlistButton(movieId) {
 }
 
 
-// appends watchlist movies to the DOM and adds a remove button
+// append favourite movies to the DOM
 async function appendWatchlistMovies(favMovieIds = []) {
   let htmlTemplate = "";
   if (favMovieIds.length === 0) {
@@ -243,7 +250,7 @@ async function appendWatchlistMovies(favMovieIds = []) {
   document.querySelector('#fav-movie-container').innerHTML = htmlTemplate;
 }
 
-// adds a given movieId to the watchlistMovies array inside _thisUser
+// adds a given movieId to the favMovies array inside _currentUser
 function addToWatchlist(movieId) {
   showLoader(true);
   _userRef.doc(_thisUser.uid).set({
@@ -256,7 +263,7 @@ function addToWatchlist(movieId) {
   document.querySelector('#searchbar').value = "";
 }
 
-// removes a given movieId to the watchlistMovies array inside _thisUser
+// removes a given movieId to the favMovies array inside _currentUser
 function removeFromWatchlist(movieId) {
   showLoader(true);
   _userRef.doc(_thisUser.uid).update({
@@ -280,19 +287,18 @@ function search(value) {
 
 }
 
-// creates a sort by function with a for of loop
 function sort(sortValue){
   let sortMovies = [];
   for (let movie of _movies) {
     sortMovies.push(movie);
   }
 
-// Appends not sorted movies to the array
+
   if(sortValue.includes('notSorted')){
     console.log("The List aint sorted");
     appendMovies(_movies);
   }
- // Appends sorted movies by alphabetical title 
+  
  if(sortValue.includes('sortByTitles')){
    console.log("Sorted by Titles");
   sortMovies.sort((a, b) => {
@@ -309,7 +315,7 @@ function sort(sortValue){
 });
     appendMovies(sortMovies);
  }
- // Appends sorted movies by year and returns the highest value first 
+ 
  if(sortValue.includes("sortByYear")){
     console.log("Sorted by Year");
     sortMovies.sort(function(a, b){return b.year-a.year});
@@ -317,8 +323,32 @@ function sort(sortValue){
   } 
 }
 
+// category selected event 
+// Virker 
+// function categorySelected(categoryId) { 
+//   appendMovies(_movies); 
+//   let htmlTemplate = ""; 
+ 
+//   for (let movie of _movies) { 
+//     if(movie.category.includes(categoryId)){ 
+//       document.querySelector('#movies-container').innerHTML =""; 
+//       showLoader(true); 
+//       console.log(movie.category); 
+//       htmlTemplate += /*html*/ ` 
+//       <article class="card"> 
+//         <h2>${movie.title} (${movie.year})</h2> 
+//         <img src="${movie.img}"> 
+//         <p>${movie.description}</p> 
+//         ${generateFavMovieButton(movie.id)}
+//       </article> 
+//     `; 
+//       showLoader(false); 
+//     }  
+//   } 
+//   document.querySelector('#movies-by-category-container').innerHTML = htmlTemplate; 
+// } 
 
-// creates a sort by category function with a for of loop 
+
 function categorySelected(categoryId){
   showLoader(true);
   if(categoryId){
@@ -341,7 +371,7 @@ function categoryFirstLetter(string) {
 }
 
  // Adding a new movie to the Array of movies
-// and creates a new movie object and adds to firestore collection
+// creates a new movie object and adds to firestore collection
 function addNewMovie() {
   let inputTitle = document.getElementById("title");
   let inputYear = document.getElementById("year");
@@ -373,7 +403,8 @@ function addNewMovie() {
 }
 
 
-// Adds loader function 
+// =========== Loader functionality =========== //
+
 function showLoader(show = true) {
   let loader = document.querySelector('#loader');
   if (show) {
