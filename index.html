@@ -14,11 +14,12 @@
 
 <body onhashchange="pageChange()">
   <!-- lowbar navigation -->
+  <!-- #movies, #profile both uses an onclick functionality with an function made in main.js -->
   <nav id="lowbar" class="lowbar hide">
     <a href="#movies" onclick=gotoMovies()>Movies</a>
     <a href="#watchlist">Watchlist</a>
     <a href="#addmovie">Add movie</a>
-    <a href="#profile" onclick=appendUserData()>Profile</a>
+    <a href="#profile" onclick=getUserData()>Profile</a>
   </nav>
 
   <!-- home -->
@@ -28,12 +29,16 @@
     </header>
 <!-- searchbar -->
     <section class="sogresultater">
+      <!-- onchange on the select tag with the id select-sort -->
       <select id="select-sort" onchange="sort(this.value)">
+        <!-- Shows all the selection options -->
         <option value="notSorted"> Sort by </option>
         <option value="sortByTitles"> A-Z </option>
         <option value="sortByYear"> Year </option>
       </select>
+      <!-- onchange on the select tag with the id select-category -->
       <select id="select-category" onchange="categorySelected(this.value)">
+        <!-- Shows all the selection options -->
         <option value="">Show all movies</option>
         <option value="Crime">Crime</option>
         <option value="Animation">Animation</option>
@@ -42,6 +47,7 @@
         <option value="Drama">Drama</option>
         <option value="Adventure">Adventure</option>
       </select>
+      <!-- onkeyup on the input tag with the id searchbar -->
     <input type="search" id="searchbar" placeholder="Search YMDB.." onkeyup="search(this.value)">
   </section>
 
@@ -70,7 +76,7 @@
     <header class="topbar">
       <h2>Watchlist</h2>
     </header>
-    <article id="">
+    <article>
       <h2 class="headingwatch">All your desired movies in one place</h2>
     </article>
     <section id="fav-movie-container" class="grid-container">
@@ -96,6 +102,7 @@
         <input id="description" type="text" name="description" placeholder="Movie description">
         <label for="imageUrl">Image</label>
         <input id="imageUrl" type="text" name="img" placeholder="Insert Image URL">
+        <!-- an onclick functionality with an function made in main.js -->
         <button type="button" name="button" onclick="addNewMovie()">Save</button>
       </form>
         <section id="movies-by-add-container" class="grid-container">
@@ -114,8 +121,10 @@
         <label for="mail">Mail</label>
         <input type="email" id="mail" placeholder="Type your mail" disabled>
         <label for="hairColor">Profile Image</label>
+        <!-- onchange on the input tag with the id img -->
         <input type="file" id="img" accept="image/*" onchange="previewImage(this.files[0], 'imagePreview')">
         <img id="imagePreview" class="image-preview">
+         <!-- an onclick functionality with an function made in main.js -->
         <button type="button" name="button" onclick="updateUser()">Save</button>
       </form>
     </section>
@@ -134,14 +143,13 @@
     <div class="spinner"></div>
   </div>
 
+  <!-- Scripts from Firebase  -->
  <!-- The core Firebase JS SDK is always required and must be listed first -->
 <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.4.1/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.4.1/firebase-firestore.js"></script>
 <script src="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.js"></script>
 
-<!-- TODO: Add SDKs for Firebase products that you want to use
-     https://firebase.google.com/docs/web/setup#available-libraries -->
       <!-- firebase config js file -->
      <script src="js/firebase-config.js"></script>
      <!-- SPA functionality -->

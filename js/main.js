@@ -3,26 +3,33 @@
 
 // =========== Movie SPA functionality =========== //
 
-
+// Creates 2 variables _movieRef, _userRed. Uses _db variable from firebase-config.js to fetch movies and user information/collection
 const _movieRef = _db.collection("movies");
 const _userRef = _db.collection("users")
+
+//Creates global variables  
+
 let _thisUser;
 let _movies;
 let _categories = [];
-
 let _movieID = "";
 
 
-// ========== FIREBASE AUTH ========== //
+// ========== Firebase Authentication ========== //
+
 // Listen on authentication state change
 firebase.auth().onAuthStateChanged(function (user) {
-  if (user) { // if user exists and is authenticated
+  // Checks if user exists and is authenticated
+  if (user) { 
+    // If user eixsts and is authenticated, runs the function "userAuthenticated()"
     userAuthenticated(user);
-  } else { // if user is not logged in
+  } else { 
+    // if user is not logged in, runs the function "userNotAuthenticated()"
     userNotAuthenticated();
   }
 });
 
+// Takes the parameter user, and sets user as the global variable _thisUser and calls additional functions
 function userAuthenticated(user) {
   _thisUser = user;
   hideLowbar(false);
@@ -30,8 +37,9 @@ function userAuthenticated(user) {
   showLoader(false);
 }
 
+// Changes the global variable _thisUser to null, hides lowbar and shows the login page
 function userNotAuthenticated() {
-  _thisUser = null; // reset _thisUser
+  _thisUser = null;
   hideLowbar(true);
   showPage("login");
 
@@ -43,13 +51,13 @@ function userNotAuthenticated() {
     ],
     signInSuccessUrl: '#movies'
   };
-  // Init Firebase UI Authentication
+  // Starts Firebase UI Authentication
   const ui = new firebaseui.auth.AuthUI(firebase.auth());
   ui.start('#firebaseui-auth-container', uiConfig);
   showLoader(false);
 }
 
-// show and hide lowbar
+// Show or hides the lowbar
 function hideLowbar(hide) {
   let lowbar = document.querySelector('#lowbar');
   if (hide) {
@@ -59,35 +67,35 @@ function hideLowbar(hide) {
   }
 }
 
-// sign out user
+// Log out the user and resets the input fields 
 function logout() {
   firebase.auth().signOut();
-  // reset input fields
   document.querySelector('#name').value = "";
   document.querySelector('#mail').value = "";
   document.querySelector('#imagePreview').src = "";
 }
 
 
-// ========== PROFILE PAGE FUNCTIONALITY ========== //
-// append user data to profile page
-function appendUserData() {
+// ========== Profile Functionality ========== //
+
+
+// Changes the inputs on the profile page to the data collected from _thisUser's object data such as name, email and image.
+function getUserData() {
   document.querySelector('#name').value = _thisUser.displayName;
   document.querySelector('#mail').value = _thisUser.email;
   document.querySelector('#imagePreview').src = _thisUser.img; 
-  console.log(_thisUser.img);
 }
 
-// update user data - auth user and database object
+// Sets the currentuser as user and updates the user's data.
 function updateUser() {
   let user = firebase.auth().currentUser;
 
-  // update auth user
+  // Update user name 
   user.updateProfile({
     name: document.querySelector('#name').value
   });
 
-  // update database user
+  // Update user image
   _userRef.doc(_thisUser.uid).set({
     img: document.querySelector('#imagePreview').src
   }, {
@@ -95,7 +103,9 @@ function updateUser() {
   });
 }
 
+
 // ========== Prieview image function ========== //
+
 function previewImage(file, previewId) {
   if (file) {
     let reader = new FileReader();
@@ -117,10 +127,11 @@ function previewImage(file, previewId) {
         _thisUser = {
           ...firebase.auth().currentUser,
           ...userData.data()
-        }; //concating two objects: authUser object and userData objec from the db
+        }; //concating two objects: authUser object and userData object from the db
         appendWatchlistMovies(_thisUser.favMovies);
         if (_movies) {
-          appendMovies(_movies); // refresh movies when user data changes
+          // Calls the appendMovies to refresh the movies when user data changes
+          appendMovies(_movies);
         }
         showLoader(false);
       }
@@ -148,25 +159,24 @@ function appendMovies(movies) {
       <article class="card">
         <h2>${movie.title} (${movie.year})</h2>
         <img src="${movie.img}">
-        <p>${movie.description}</p>
         ${createWatchlistButton(movie.id)}
-        <button onclick="selectUser('${movie.id}','${movie.title}','${movie.description}','${movie.img}')">View</button>
+        <button class="btnViewMovie" onclick="viewMovieDetails('${movie.id}')">View details</button>
       </article> 
     `;
   }
   document.querySelector('#movies-container').innerHTML = htmlTemplate;
 }
 
-function selectUser(id, title, desc, img) {
+function viewMovieDetails(id) {
+  let movie = _movies.find(movie => movie.id === id);
   // references to the input fields
   let titleInput = document.querySelector('#viewTitle');
   let descInput = document.querySelector('#viewDesc');
   let imageInput = document.querySelector('#viewImage');
 
-  imageInput.src = img;
-  titleInput.innerHTML = title;
-  descInput.innerHTML = desc;
-  _movieID = id;
+  imageInput.src = movie.img;
+  titleInput.innerHTML = movie.title;
+  descInput.innerHTML = movie.description;
   navigateTo("edit");
 }
 
@@ -223,7 +233,7 @@ async function appendWatchlistMovies(favMovieIds = []) {
         <article class="card">
           <h2>${movie.title} (${movie.year})</h2>
           <img src="${movie.img}">
-          <p>${movie.description}</p>
+          <button class="btnViewMovie" onclick="viewMovieDetails('${movie.id}')">View details</button>
           <button onclick="removeFromWatchlist('${movie.id}')" class="rm">Remove from watchlist</button>
         </article>
       `;
