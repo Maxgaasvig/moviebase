@@ -12,7 +12,6 @@ const _userRef = _db.collection("users")
 let _thisUser;
 let _movies;
 let _categories = [];
-let _movieID = "";
 
 
 // ========== Firebase Authentication ========== //
@@ -175,30 +174,39 @@ function appendMovies(movies) {
 
 // Gets a movies details for our view page
 function viewMovieDetails(id) {
+  // Creates variable movie
+  // Uses the method .find() on _movies array. Sets movie to the parameter id, if found.
   let movie = _movies.find(movie => movie.id === id);
-  // references to the input fields
+
+  // Create variables and set them to references of the input fields 
   let titleInput = document.querySelector('#viewTitle');
   let descInput = document.querySelector('#viewDesc');
   let imageInput = document.querySelector('#viewImage');
 
+  // Changes the input fields' innerHTML to the movie's object values.
+  // such as title field = movie title.
   imageInput.src = movie.img;
   titleInput.innerHTML = movie.title;
   descInput.innerHTML = movie.description;
+  // Uses the navigateTo function.
   navigateTo("view");
 }
 
 
 function updateUser() {
+  // Create variables and set them to references of the input fields 
   let nameInput = document.querySelector('#name-update');
   let mailInput = document.querySelector('#mail-update');
   let imageInput = document.querySelector('#imagePreviewUpdate');
 
+  // Updates the users values to whats written in the input fields.
   let userToUpdate = {
     name: nameInput.value,
     mail: mailInput.value,
     img: imageInput.src
   };
-  _userRef.doc(_selectedUserId).update(userToUpdate);
+  // Updates the user in firebase
+  _userRef.doc(_thisUser).update(userToUpdate);
   navigateTo("home");
 }
 
