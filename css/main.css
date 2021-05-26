@@ -332,6 +332,10 @@ input, select {
 
 .headingwatch {
   padding-top: 1.5%;
+  text-align: center;
+  display: flex;
+  margin: auto;
+  justify-content: center;
 }
 
 /* ---------- card styling ---------- */

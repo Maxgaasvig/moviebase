@@ -84,6 +84,7 @@ function getUserData() {
   document.querySelector('#name').value = _thisUser.displayName;
   document.querySelector('#mail').value = _thisUser.email;
   document.querySelector('#imagePreview').src = _thisUser.img; 
+  console.log("Current name" + ": " +document.querySelector('#name').value);
 }
 
 // Sets the currentuser as user and updates the user's data.
@@ -92,7 +93,7 @@ function updateUser() {
 
   // Update user name 
   user.updateProfile({
-    name: document.querySelector('#name').value
+    displayName: document.querySelector('#name').value
   });
 
   // Update user image
@@ -101,22 +102,8 @@ function updateUser() {
   }, {
     merge: true
   });
+  console.log("Updated name" + ": " + document.querySelector('#name').value);
 }
-
-function updatessUser() {
-  let nameInput = document.querySelector('#name');
-  let mailInput = document.querySelector('#mail');
-  let imageInput = document.querySelector('#imagePreview');
-
-  let userToUpdate = {
-    name: nameInput.value,
-    mail: mailInput.value,
-    img: imageInput.src
-  };
-  _userRef.doc(_selectedUserId).update(userToUpdate);
-  navigateTo("home");
-}
-
 
 
 // ========== Prieview image function ========== //
@@ -208,7 +195,7 @@ function viewMovieDetails(id) {
   navigateTo("view");
 }
 
-
+// Used to reset homepage.
 function gotoMovies(){
   document.querySelector('#movies-container').innerHTML ="";
   document.querySelector('#movies-by-category-container').innerHTML = "";
@@ -217,9 +204,11 @@ function gotoMovies(){
   init();
 }
 
+// Creates a watchlist Button
 function createWatchlistButton(movieId) {
   let btnTemplate = /*html*/ `
     <button onclick="addToWatchlist('${movieId}')">Add to watchlist</button>`;
+    // Checks if _thisUser's favmovies includes the movieId. If so it creates a remove button instead.
   if (_thisUser.favMovies && _thisUser.favMovies.includes(movieId)) {
     btnTemplate = /*html*/ `
       <button onclick="removeFromWatchlist('${movieId}')" class="btnRemove">Remove from watchlist</button>`;
@@ -228,16 +217,18 @@ function createWatchlistButton(movieId) {
 }
 
 
-// append favourite movies to the DOM
+// append watchlist movies to the DOM with an arraylist as parameter.
 async function appendWatchlistMovies(favMovieIds = []) {
   let htmlTemplate = "";
+  //If the length of the array is 0, then it creates a new article tag with a p tag says Please, add movies to watchlist.
   if (favMovieIds.length === 0) {
     htmlTemplate += /*html*/ `
     <article>
-      <p id=""></p>
+      <p>Please, add movies to watchlist.</p>
     </article>
   `;
   } else {
+    // Runs through the arraylist and adds the movies to fav-movie-container
     for (let movieId of favMovieIds) {
       await _movieRef.doc(movieId).get().then(function (doc) {
         let movie = doc.data();
@@ -246,8 +237,8 @@ async function appendWatchlistMovies(favMovieIds = []) {
         <article class="card">
           <h2>${movie.title} (${movie.year})</h2>
           <img src="${movie.img}">
-          <button class="btnViewMovie" onclick="viewMovieDetails('${movie.id}')">View details</button>
           <button onclick="removeFromWatchlist('${movie.id}')" class="rm">Remove from watchlist</button>
+          <button class="btnViewMovie" onclick="viewMovieDetails('${movie.id}')">View details</button>
         </article>
       `;
       });
@@ -256,7 +247,7 @@ async function appendWatchlistMovies(favMovieIds = []) {
   document.querySelector('#fav-movie-container').innerHTML = htmlTemplate;
 }
 
-// adds a given movieId to the favMovies array inside _currentUser
+// adds a given movieId to the watchlist Movies array inside _thisUser
 function addToWatchlist(movieId) {
   showLoader(true);
   _userRef.doc(_thisUser.uid).set({
@@ -264,37 +255,50 @@ function addToWatchlist(movieId) {
   }, {
     merge: true
   });
+  // Resetting dropdown menus,search bar and container after adding a movie.
   document.querySelector('#select-category').selectedIndex = "0"
   document.querySelector('#movies-by-category-container').innerHTML = "";
   document.querySelector('#searchbar').value = "";
 }
 
-// removes a given movieId to the favMovies array inside _currentUser
+// removes a given movieId to the watchlist movies array inside _thisUser
 function removeFromWatchlist(movieId) {
   showLoader(true);
   _userRef.doc(_thisUser.uid).update({
     favMovies: firebase.firestore.FieldValue.arrayRemove(movieId)
   });
-  document.querySelector('#movies-by-category-container').innerHTML = "";
+ // Resetting dropdown menus,search bar and container after removing a movie.
+document.querySelector('#select-category').selectedIndex = "0"
+document.querySelector('#movies-by-category-container').innerHTML = "";
+document.querySelector('#searchbar').value = "";
 }
 
-// search functionality
+// Search Functionality with an value parameter
 function search(value) {
+  // Sets searchQuery to the parameter's value but lowercase.
   let searchQuery = value.toLowerCase();
+  // Creates a new arraylist
   let filteredMovies = [];
   for (let movie of _movies) {
+    // Creates variable title, and sets the variable to the movie's title, but with lowercase
     let title = movie.title.toLowerCase();
+    // If statement checks if the variable title includes the searchQuery variable.
     if (title.includes(searchQuery)) {
+      // If so, it means the searched movie title is in our _movie arraylist and adds it to the filteredMovies arraylist.
       filteredMovies.push(movie);
     }
   }
+  // Uses the appendMovies function with our filteredMovies as its parameter to show the movies inside of the array.
   appendMovies(filteredMovies);
   document.querySelector('#movies-by-category-container').innerHTML = "";
 
 }
 
+// This function sorts an array with the sortValue.
 function sort(sortValue){
+  // Creats an arraylist
   let sortMovies = [];
+  // for-op loop, running through all movies in _movies and adds them to sortMovies.
   for (let movie of _movies) {
     sortMovies.push(movie);
   }
@@ -304,7 +308,7 @@ function sort(sortValue){
     console.log("The List aint sorted");
     appendMovies(_movies);
   }
-  
+ 
  if(sortValue.includes('sortByTitles')){
    console.log("Sorted by Titles");
   sortMovies.sort((a, b) => {
@@ -321,63 +325,42 @@ function sort(sortValue){
 });
     appendMovies(sortMovies);
  }
- 
+
  if(sortValue.includes("sortByYear")){
     console.log("Sorted by Year");
     sortMovies.sort(function(a, b){return b.year-a.year});
     appendMovies(sortMovies);
   } 
 }
-
-// category selected event 
-// Virker 
-// function categorySelected(categoryId) { 
-//   appendMovies(_movies); 
-//   let htmlTemplate = ""; 
- 
-//   for (let movie of _movies) { 
-//     if(movie.category.includes(categoryId)){ 
-//       document.querySelector('#movies-container').innerHTML =""; 
-//       showLoader(true); 
-//       console.log(movie.category); 
-//       htmlTemplate += /*html*/ ` 
-//       <article class="card"> 
-//         <h2>${movie.title} (${movie.year})</h2> 
-//         <img src="${movie.img}"> 
-//         <p>${movie.description}</p> 
-//         ${generateFavMovieButton(movie.id)}
-//       </article> 
-//     `; 
-//       showLoader(false); 
-//     }  
-//   } 
-//   document.querySelector('#movies-by-category-container').innerHTML = htmlTemplate; 
-// } 
-
-
+// function that uses a parameter categoryId
 function categorySelected(categoryId){
   showLoader(true);
+  // Checks if there is an value as parameter.
   if(categoryId){
+    // Creates a new arraylist 
     let moviesByCategory = [];
+    // For-of loop of _movies
     for (let movie of _movies) {
+      // if a movie's category is included in the categoryId then adds it to the arraylist
       if(movie.category.includes(categoryId)){
         moviesByCategory.push(movie);
       }
     }
+    // Uses the appendMovies function with the created arraylist moviesByCategory
     appendMovies(moviesByCategory);
   } else{
+    // If not then just appendmovies with the global _movie arraylist.
     appendMovies(_movies);
   }
   showLoader(false);
 }
 
-
+// Changes the first letter of a string to uppercase.
 function categoryFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
- // Adding a new movie to the Array of movies
-// creates a new movie object and adds to firestore collection
+ // Adding a new movie to the Array of movies 
 function addNewMovie() {
   let inputTitle = document.getElementById("title");
   let inputYear = document.getElementById("year");
@@ -385,10 +368,10 @@ function addNewMovie() {
   let inputImageUrl = document.getElementById("imageUrl");
   let inputDescription = document.getElementById("description");
 
+  // Uses the categoryFirstLetter to make sure the first letter in inputCategori is upper case.
   categoryFirstLetter(inputCategori.value)
 
-  console.log(inputCategori.value);
-
+  // Creates a new movie object 
   let newMovie = {
     title: inputTitle.value,
     year: inputYear.value,
@@ -396,7 +379,7 @@ function addNewMovie() {
     img: inputImageUrl.value,
     description: inputDescription.value
   }
-  // add to movie ref
+  // add to _movieRef firestore collection
   _movieRef.add(newMovie);
   //navigate to home
   navigateTo("movies");
