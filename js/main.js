@@ -14,6 +14,7 @@ let _movies;
 let _categories = [];
 
 
+
 // ========== Firebase Authentication ========== //
 
 // Listen on authentication state change
@@ -102,6 +103,21 @@ function updateUser() {
   });
 }
 
+function updatessUser() {
+  let nameInput = document.querySelector('#name');
+  let mailInput = document.querySelector('#mail');
+  let imageInput = document.querySelector('#imagePreview');
+
+  let userToUpdate = {
+    name: nameInput.value,
+    mail: mailInput.value,
+    img: imageInput.src
+  };
+  _userRef.doc(_selectedUserId).update(userToUpdate);
+  navigateTo("home");
+}
+
+
 
 // ========== Prieview image function ========== //
 
@@ -188,26 +204,8 @@ function viewMovieDetails(id) {
   imageInput.src = movie.img;
   titleInput.innerHTML = movie.title;
   descInput.innerHTML = movie.description;
-  // Uses the navigateTo function.
+  // Uses the navigateTo fucntion
   navigateTo("view");
-}
-
-
-function updateUser() {
-  // Create variables and set them to references of the input fields 
-  let nameInput = document.querySelector('#name-update');
-  let mailInput = document.querySelector('#mail-update');
-  let imageInput = document.querySelector('#imagePreviewUpdate');
-
-  // Updates the users values to whats written in the input fields.
-  let userToUpdate = {
-    name: nameInput.value,
-    mail: mailInput.value,
-    img: imageInput.src
-  };
-  // Updates the user in firebase
-  _userRef.doc(_thisUser).update(userToUpdate);
-  navigateTo("home");
 }
 
 
