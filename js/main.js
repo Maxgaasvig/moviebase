@@ -215,7 +215,7 @@ function createWatchlistButton(movieId) {
 }
 
 
-// append favourite movies to the DOM
+// appends watchlist movies to the DOM and adds a remove button
 async function appendWatchlistMovies(favMovieIds = []) {
   let htmlTemplate = "";
   if (favMovieIds.length === 0) {
@@ -243,7 +243,7 @@ async function appendWatchlistMovies(favMovieIds = []) {
   document.querySelector('#fav-movie-container').innerHTML = htmlTemplate;
 }
 
-// adds a given movieId to the favMovies array inside _currentUser
+// adds a given movieId to the watchlistMovies array inside _thisUser
 function addToWatchlist(movieId) {
   showLoader(true);
   _userRef.doc(_thisUser.uid).set({
@@ -256,7 +256,7 @@ function addToWatchlist(movieId) {
   document.querySelector('#searchbar').value = "";
 }
 
-// removes a given movieId to the favMovies array inside _currentUser
+// removes a given movieId to the watchlistMovies array inside _thisUser
 function removeFromWatchlist(movieId) {
   showLoader(true);
   _userRef.doc(_thisUser.uid).update({
@@ -280,18 +280,19 @@ function search(value) {
 
 }
 
+// creates a sort by function with a for of loop
 function sort(sortValue){
   let sortMovies = [];
   for (let movie of _movies) {
     sortMovies.push(movie);
   }
 
-
+// Appends not sorted movies to the array
   if(sortValue.includes('notSorted')){
     console.log("The List aint sorted");
     appendMovies(_movies);
   }
-  
+ // Appends sorted movies by alphabetical title 
  if(sortValue.includes('sortByTitles')){
    console.log("Sorted by Titles");
   sortMovies.sort((a, b) => {
@@ -308,7 +309,7 @@ function sort(sortValue){
 });
     appendMovies(sortMovies);
  }
- 
+ // Appends sorted movies by year and returns the highest value first 
  if(sortValue.includes("sortByYear")){
     console.log("Sorted by Year");
     sortMovies.sort(function(a, b){return b.year-a.year});
@@ -316,32 +317,8 @@ function sort(sortValue){
   } 
 }
 
-// category selected event 
-// Virker 
-// function categorySelected(categoryId) { 
-//   appendMovies(_movies); 
-//   let htmlTemplate = ""; 
- 
-//   for (let movie of _movies) { 
-//     if(movie.category.includes(categoryId)){ 
-//       document.querySelector('#movies-container').innerHTML =""; 
-//       showLoader(true); 
-//       console.log(movie.category); 
-//       htmlTemplate += /*html*/ ` 
-//       <article class="card"> 
-//         <h2>${movie.title} (${movie.year})</h2> 
-//         <img src="${movie.img}"> 
-//         <p>${movie.description}</p> 
-//         ${generateFavMovieButton(movie.id)}
-//       </article> 
-//     `; 
-//       showLoader(false); 
-//     }  
-//   } 
-//   document.querySelector('#movies-by-category-container').innerHTML = htmlTemplate; 
-// } 
 
-
+// creates a sort by category function with a for of loop 
 function categorySelected(categoryId){
   showLoader(true);
   if(categoryId){
@@ -364,7 +341,7 @@ function categoryFirstLetter(string) {
 }
 
  // Adding a new movie to the Array of movies
-// creates a new movie object and adds to firestore collection
+// and creates a new movie object and adds to firestore collection
 function addNewMovie() {
   let inputTitle = document.getElementById("title");
   let inputYear = document.getElementById("year");
@@ -396,8 +373,7 @@ function addNewMovie() {
 }
 
 
-// =========== Loader functionality =========== //
-
+// Adds loader function 
 function showLoader(show = true) {
   let loader = document.querySelector('#loader');
   if (show) {
