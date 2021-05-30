@@ -139,7 +139,7 @@ function previewImage(file, previewId) {
       }
     });
 
-
+// order movies by year and append to the global arraylist
   _movieRef.orderBy("year").onSnapshot(moviesData => {
     _movies = [];
     moviesData.forEach(doc => {
@@ -298,7 +298,7 @@ function search(value) {
 function sort(sortValue){
   // Creats an arraylist
   let sortMovies = [];
-  // for-op loop, running through all movies in _movies and adds them to sortMovies.
+  // for-of loop, running through all movies in _movies and adds them to sortMovies.
   for (let movie of _movies) {
     sortMovies.push(movie);
   }
