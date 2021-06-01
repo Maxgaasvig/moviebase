@@ -209,16 +209,30 @@ h1 {
   padding: 1em;
 }
 
-@media (min-width: 600px) {
-  .grid-container {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-@media (min-width: 992px) {
+/* Min-width */
+@media only screen and (min-width: 600px) {
   .grid-container {
     grid-template-columns: 1fr 1fr 1fr;
   }
+
+}
+
+@media only screen and (min-width: 992px) {
+  .grid-container {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+@media only screen and (min-width: 200px) {
+  .viewDetails{
+  }
+  #viewImage{
+  }
+  
+  #viewDesc{
+
+  }
+
 }
 
 .grid-container>article {
