@@ -191,7 +191,7 @@ function viewMovieDetails(id) {
   imageInput.src = movie.img;
   titleInput.innerHTML = movie.title;
   descInput.innerHTML = movie.description;
-  // Uses the navigateTo fucntion
+  // Uses the navigateTo function
   navigateTo("view");
 }
 
